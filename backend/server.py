@@ -193,6 +193,13 @@ async def exchange_session(request: Request, response: Response):
     picture = auth_data.get("picture")
     session_token = auth_data.get("session_token")
     
+    # CHECK IF EMAIL IS AUTHORIZED
+    if AUTHORIZED_ADMIN_EMAILS and email.lower() not in AUTHORIZED_ADMIN_EMAILS:
+        raise HTTPException(
+            status_code=403, 
+            detail="Accès refusé. Votre email n'est pas autorisé à accéder à l'administration."
+        )
+    
     # Check if user exists
     existing_user = await db.users.find_one({"email": email}, {"_id": 0})
     
