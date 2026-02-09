@@ -140,7 +140,7 @@ code {
 
 @layer base {
     :root {
-        --background: 0 0% 100%;
+        --background: 122 30% 97%;
         --foreground: 120 5% 10%;
         --card: 0 0% 100%;
         --card-foreground: 120 5% 10%;
@@ -148,16 +148,16 @@ code {
         --popover-foreground: 120 5% 10%;
         --primary: 122 54% 24%;
         --primary-foreground: 0 0% 100%;
-        --secondary: 60 6% 95%;
+        --secondary: 122 20% 92%;
         --secondary-foreground: 120 5% 10%;
-        --muted: 210 20% 96%;
+        --muted: 122 15% 94%;
         --muted-foreground: 215 16% 47%;
         --accent: 43 74% 49%;
         --accent-foreground: 120 5% 10%;
         --destructive: 0 84% 60%;
         --destructive-foreground: 0 0% 98%;
-        --border: 214 32% 91%;
-        --input: 214 32% 91%;
+        --border: 122 20% 88%;
+        --input: 122 20% 88%;
         --ring: 122 54% 24%;
         --chart-1: 122 54% 24%;
         --chart-2: 122 40% 35%;

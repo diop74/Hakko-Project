@@ -115,7 +115,7 @@ export default function About() {
       </section>
 
       {/* Positioning */}
-      <section className="py-24 bg-sand">
+      <section className="py-24 bg-haako-50/50">
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -174,7 +174,7 @@ export default function About() {
       </section>
 
       {/* Values */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-gradient-to-b from-white to-haako-50/30">
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -216,7 +216,7 @@ export default function About() {
       </section>
 
       {/* Domains */}
-      <section className="py-24 bg-sand">
+      <section className="py-24 bg-haako-50/60">
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

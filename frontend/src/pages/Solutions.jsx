@@ -124,7 +124,7 @@ export default function Solutions() {
       </section>
 
       {/* Deliverables */}
-      <section className="py-24 bg-sand">
+      <section className="py-24 bg-haako-50/50">
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
