@@ -160,8 +160,12 @@ async def get_current_user(request: Request) -> User:
 @api_router.post("/auth/session")
 async def exchange_session(request: Request, response: Response):
     """Exchange session_id for session_token"""
-    body = await request.json()
-    session_id = body.get("session_id")
+    try:
+        body = await request.json()
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid JSON body")
+    
+    session_id = body.get("session_id") if body else None
     
     if not session_id:
         raise HTTPException(status_code=400, detail="session_id required")
