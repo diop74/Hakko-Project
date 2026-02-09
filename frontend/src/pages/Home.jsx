@@ -43,7 +43,7 @@ const services = [
 const themes = [
   { name: 'Accès à l\'énergie', icon: TrendingUp },
   { name: 'Transition énergétique', icon: Globe },
-  { name: 'Climat', icon: Target },
+  { name: 'Finance Climat', icon: Target },
   { name: 'Développement durable', icon: Users },
 ];
 
