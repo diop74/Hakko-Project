@@ -1,0 +1,152 @@
+{
+  "identity": {
+    "name": "HAAKO",
+    "tagline": "Strategic Intelligence for a Sustainable Africa",
+    "tone": "Authoritative, Insightful, Grounded, Modern African",
+    "core_values": ["Sustainability", "Data-Driven", "Strategic Clarity", "African Growth"],
+    "visual_archetype": "The Swiss-Eco Institutional"
+  },
+  "typography": {
+    "font_family_headings": "Manrope",
+    "font_family_body": "DM Sans",
+    "font_url_import": "https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Manrope:wght@200..800&display=swap",
+    "heading_styles": {
+      "h1": "font-manrope text-5xl md:text-6xl font-bold tracking-tight text-primary-900 leading-[1.1]",
+      "h2": "font-manrope text-3xl md:text-4xl font-semibold tracking-tight text-primary-900",
+      "h3": "font-manrope text-2xl font-medium tracking-normal text-primary-800",
+      "h4": "font-manrope text-lg font-semibold uppercase tracking-widest text-primary-600/80"
+    },
+    "body_styles": {
+      "lead": "font-dm-sans text-xl md:text-2xl text-slate-600 leading-relaxed font-light",
+      "p": "font-dm-sans text-base md:text-lg text-slate-600 leading-relaxed",
+      "small": "font-dm-sans text-sm text-slate-500"
+    }
+  },
+  "colors": {
+    "palette": {
+      "primary": {
+        "DEFAULT": "#1B5E20",
+        "50": "#E8F5E9",
+        "100": "#C8E6C9",
+        "200": "#A5D6A7",
+        "300": "#81C784",
+        "400": "#66BB6A",
+        "500": "#4CAF50",
+        "600": "#43A047",
+        "700": "#388E3C",
+        "800": "#2E7D32",
+        "900": "#1B5E20",
+        "950": "#052e16"
+      },
+      "secondary": {
+        "DEFAULT": "#F5F5F0",
+        "dark": "#EBEBE6"
+      },
+      "accent": {
+        "DEFAULT": "#D4A017", 
+        "light": "#FDD835"
+      },
+      "neutral": {
+        "surface": "#FFFFFF",
+        "background": "#F9FAFB",
+        "text_main": "#1A1C1A",
+        "text_muted": "#52525B"
+      }
+    },
+    "usage": {
+      "background_main": "bg-secondary/30",
+      "text_primary": "text-primary-950",
+      "text_secondary": "text-slate-600",
+      "cta_primary": "bg-primary-900 text-white hover:bg-primary-800",
+      "cta_secondary": "bg-white border border-primary-900/20 text-primary-900 hover:bg-primary-50"
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "inline-flex items-center justify-center rounded-lg bg-[#1B5E20] px-8 py-3 text-sm font-medium text-white transition-all hover:bg-[#154a19] focus:outline-none focus:ring-2 focus:ring-[#1B5E20] focus:ring-offset-2 shadow-sm",
+      "secondary": "inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-8 py-3 text-sm font-medium text-slate-900 transition-all hover:bg-slate-50 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2",
+      "ghost": "inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900"
+    },
+    "cards": {
+      "feature": "group relative overflow-hidden rounded-2xl bg-white p-8 shadow-sm transition-all hover:shadow-md border border-slate-100",
+      "blog": "group overflow-hidden rounded-xl bg-white border border-slate-100 transition-all hover:border-[#1B5E20]/20"
+    },
+    "inputs": {
+      "default": "flex h-11 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B5E20] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+    },
+    "layout": {
+      "container": "container mx-auto px-4 md:px-6 max-w-7xl",
+      "section_spacing": "py-16 md:py-24 lg:py-32",
+      "grid_bento": "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[300px]"
+    }
+  },
+  "visual_enhancers": {
+    "gradients": {
+      "subtle_green": "bg-gradient-to-b from-[#1B5E20]/5 to-transparent",
+      "hero_overlay": "bg-gradient-to-r from-white via-white/80 to-transparent"
+    },
+    "shadows": {
+      "soft": "shadow-[0_2px_8px_rgba(0,0,0,0.04)]",
+      "medium": "shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
+    },
+    "borders": {
+      "subtle": "border border-slate-100",
+      "tracing": "border border-transparent group-hover:border-[#1B5E20]/20"
+    }
+  },
+  "image_urls": {
+    "hero_background": {
+      "url": "https://images.unsplash.com/photo-1722081798151-13bcb3a1c975?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "desc": "The Richat Structure (Eye of Africa) in Mauritania - represents Strategic Vision and Location",
+      "usage": "Use as a subtle background pattern or hero image with overlay"
+    },
+    "meeting": {
+      "url": "https://images.unsplash.com/photo-1573166364839-1bfe9196c23e?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "desc": "Diverse professional team in boardroom",
+      "usage": "About Us or Solutions section"
+    },
+    "data_abstract": {
+      "url": "https://images.unsplash.com/photo-1764263996480-53a167365ee7?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "desc": "Abstract green vertical lines data visualization",
+      "usage": "Background for 'Strategic Intelligence' or Stats section"
+    },
+    "city_context": {
+      "url": "https://images.unsplash.com/photo-1660283423633-21bb178b2f2b?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "desc": "African city skyline",
+      "usage": "Contact or Footer background"
+    },
+    "logo_url": "https://customer-assets.emergentagent.com/job_sustainable-insights/artifacts/y08gbl8u_20251015_1623_Haako%20Logo%20Design_simple_compose_01k7mavmrke71vr0nt45t3fban.png"
+  },
+  "motion": {
+    "page_transition": "initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.5, ease: 'easeOut' }}",
+    "card_hover": "whileHover={{ y: -5, transition: { duration: 0.2 } }}",
+    "stagger_children": "variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.1 } } }}"
+  },
+  "instructions_to_main_agent": [
+    "Install 'lucide-react' for icons.",
+    "Install 'framer-motion' for animations.",
+    "Use 'Manrope' for all headings and 'DM Sans' for body text. Add the Google Fonts link to index.html immediately.",
+    "Ensure the Primary Green (#1B5E20) is used for active states and primary buttons.",
+    "Do NOT use pure black. Use #1A1C1A or slate-900.",
+    "The 'Solutions' section should use a grid layout with cards that have a subtle hover lift.",
+    "The 'Blog' should look like a clean editorial (medium.com style) with large typography.",
+    "Admin panel must be clean, use a sidebar navigation, and focus on content editing.",
+    "Use the provided 'Richat Structure' image as a strategic visual metaphor - do not overuse generic stock photos.",
+    "Implement a 'Glassmorphic' sticky header: bg-white/80 backdrop-blur-md border-b border-slate-100."
+  ],
+  "UNIVERSAL_GUIDELINES": {
+    "principles": [
+      "No 'AI Slop': Avoid generic centered layouts. Use asymmetry.",
+      "Whitespace: Use py-24 or py-32 for section spacing.",
+      "Typography: Letter-spacing tight for headings (-0.02em).",
+      "Interaction: All buttons must have hover/active states.",
+      "Accessibility: Ensure text contrast > 4.5:1."
+    ],
+    "donots": [
+      "Do NOT use gradients for text.",
+      "Do NOT use 'Inter' font for headings.",
+      "Do NOT use 100% full width images without containers unless it is a background.",
+      "Do NOT make the logo spin."
+    ]
+  }
+}
