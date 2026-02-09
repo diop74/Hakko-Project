@@ -52,7 +52,7 @@ export default function Contact() {
   return (
     <div className="min-h-screen" data-testid="contact-page">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-b from-haako-50/30 to-white">
+      <section className="pt-32 pb-16 bg-gradient-to-b from-haako-100/40 to-haako-50/20">
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -75,7 +75,7 @@ export default function Contact() {
       </section>
 
       {/* Contact Content */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-haako-50/30">
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <div className="grid lg:grid-cols-5 gap-16">
             {/* Contact Info */}

@@ -92,7 +92,7 @@ export default function Blog() {
   return (
     <div className="min-h-screen" data-testid="blog-page">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-b from-haako-50/30 to-white">
+      <section className="pt-32 pb-16 bg-gradient-to-b from-haako-100/40 to-haako-50/20">
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
