@@ -80,3 +80,21 @@ HAAKO est une plateforme d'analyse, de recherche appliquée et de communication 
 3. Ajouter des métriques Google Analytics
 4. Créer plus de contenu exemple
 5. Optimiser SEO avec meta tags dynamiques
+
+---
+
+## Update (2026-02-09 - Iteration 2)
+
+### New Features Added:
+- ✅ **Téléchargement PDF** des articles avec logo HAAKO et mise en page professionnelle
+- ✅ **Design plus vert** : Palette mise à jour avec fond vert clair (#E8F5E9) au lieu de blanc
+
+### Design Changes:
+- Background global: haako-50/30 (vert très clair)
+- Hero sections: gradient haako-100 → haako-50
+- Sections alternées: haako-50/50 et haako-50/40
+- Badges et accents: haako-100 avec bordure haako-200
+
+### Technical:
+- Librairie html2pdf.js ajoutée pour génération PDF
+- CSS variables mises à jour pour palette verte
