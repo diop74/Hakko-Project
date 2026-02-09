@@ -49,7 +49,7 @@ const themes = [
 
 export default function Home() {
   return (
-    <div className="min-h-screen" data-testid="home-page">
+    <div className="min-h-screen bg-haako-50/30" data-testid="home-page">
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center pt-20 overflow-hidden">
         {/* Background Image */}
@@ -58,7 +58,7 @@ export default function Home() {
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url(${HERO_BG})` }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/70" />
+          <div className="absolute inset-0 bg-gradient-to-r from-haako-50/95 via-haako-50/90 to-haako-50/60" />
         </div>
 
         <div className="container mx-auto px-4 md:px-6 max-w-7xl relative z-10">
@@ -68,14 +68,14 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
             >
-              <span className="inline-block px-4 py-1.5 rounded-full bg-haako-50 text-haako-900 text-sm font-medium mb-6">
+              <span className="inline-block px-4 py-1.5 rounded-full bg-haako-100 text-haako-900 text-sm font-medium mb-6 border border-haako-200">
                 Intelligence Stratégique
               </span>
               <h1 className="font-manrope text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 leading-[1.1] mb-6">
                 Éclairer les décisions pour une{' '}
                 <span className="text-haako-900">Afrique durable</span>
               </h1>
-              <p className="font-dm-sans text-lg md:text-xl text-slate-600 leading-relaxed mb-8 max-w-xl">
+              <p className="font-dm-sans text-lg md:text-xl text-slate-700 leading-relaxed mb-8 max-w-xl">
                 HAAKO transforme les données complexes en analyses rigoureuses sur l'énergie, 
                 le climat et le développement durable, au service des décideurs africains.
               </p>
@@ -86,7 +86,7 @@ export default function Home() {
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
-                <Button asChild variant="outline" className="h-12 px-8 border-slate-200">
+                <Button asChild variant="outline" className="h-12 px-8 border-haako-300 bg-white/80 hover:bg-white">
                   <Link to="/about" data-testid="hero-cta-about">
                     En savoir plus
                   </Link>
