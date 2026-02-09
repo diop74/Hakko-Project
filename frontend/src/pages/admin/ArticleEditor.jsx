@@ -9,8 +9,7 @@ import {
   Image as ImageIcon,
   X
 } from 'lucide-react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import MDEditor from '@uiw/react-md-editor';
 import { adminArticlesAPI, authAPI } from '@/lib/api';
 import AdminLayout from '@/components/AdminLayout';
 import { Button } from '@/components/ui/button';
@@ -40,25 +39,6 @@ const themes = [
   { value: 'developpement', label: 'Développement Durable' },
 ];
 
-const quillModules = {
-  toolbar: [
-    [{ 'header': [1, 2, 3, false] }],
-    ['bold', 'italic', 'underline', 'strike'],
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    ['blockquote'],
-    ['link', 'image'],
-    ['clean']
-  ],
-};
-
-const quillFormats = [
-  'header',
-  'bold', 'italic', 'underline', 'strike',
-  'list', 'bullet',
-  'blockquote',
-  'link', 'image'
-];
-
 function generateSlug(title) {
   return title
     .toLowerCase()
@@ -66,6 +46,60 @@ function generateSlug(title) {
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '');
+}
+
+// Convert markdown to HTML for storage
+function markdownToHtml(markdown) {
+  if (!markdown) return '';
+  // Basic markdown to HTML conversion
+  let html = markdown
+    // Headers
+    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+    // Bold
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    // Italic
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    // Links
+    .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>')
+    // Images
+    .replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" />')
+    // Unordered lists
+    .replace(/^\- (.*$)/gim, '<li>$1</li>')
+    // Line breaks and paragraphs
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br/>');
+  
+  // Wrap in paragraph tags if not already wrapped
+  if (!html.startsWith('<')) {
+    html = '<p>' + html + '</p>';
+  }
+  
+  return html;
+}
+
+// Convert HTML back to markdown for editing
+function htmlToMarkdown(html) {
+  if (!html) return '';
+  return html
+    .replace(/<h1>(.*?)<\/h1>/gi, '# $1\n\n')
+    .replace(/<h2>(.*?)<\/h2>/gi, '## $1\n\n')
+    .replace(/<h3>(.*?)<\/h3>/gi, '### $1\n\n')
+    .replace(/<strong>(.*?)<\/strong>/gi, '**$1**')
+    .replace(/<b>(.*?)<\/b>/gi, '**$1**')
+    .replace(/<em>(.*?)<\/em>/gi, '*$1*')
+    .replace(/<i>(.*?)<\/i>/gi, '*$1*')
+    .replace(/<a href="(.*?)">(.*?)<\/a>/gi, '[$2]($1)')
+    .replace(/<img src="(.*?)" alt="(.*?)".*?\/>/gi, '![$2]($1)')
+    .replace(/<li>(.*?)<\/li>/gi, '- $1\n')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p><p>/gi, '\n\n')
+    .replace(/<\/?p>/gi, '')
+    .replace(/<\/?ul>/gi, '')
+    .replace(/<\/?ol>/gi, '')
+    .replace(/&nbsp;/gi, ' ')
+    .trim();
 }
 
 export default function AdminArticleEditor() {
@@ -89,6 +123,8 @@ export default function AdminArticleEditor() {
     tags: '',
     status: 'draft'
   });
+
+  const [markdownContent, setMarkdownContent] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -115,6 +151,8 @@ export default function AdminArticleEditor() {
             tags: article.tags?.join(', ') || '',
             status: article.status || 'draft'
           });
+          // Convert HTML to markdown for the editor
+          setMarkdownContent(htmlToMarkdown(article.content || ''));
         }
       }
     } catch (error) {
@@ -135,7 +173,9 @@ export default function AdminArticleEditor() {
   };
 
   const handleContentChange = useCallback((value) => {
-    setFormData(prev => ({ ...prev, content: value }));
+    setMarkdownContent(value || '');
+    // Convert markdown to HTML for storage
+    setFormData(prev => ({ ...prev, content: markdownToHtml(value || '') }));
   }, []);
 
   const handleImageUpload = async (e) => {
@@ -156,7 +196,7 @@ export default function AdminArticleEditor() {
   };
 
   const handleSubmit = async (status = formData.status) => {
-    if (!formData.title || !formData.slug || !formData.excerpt || !formData.content) {
+    if (!formData.title || !formData.slug || !formData.excerpt || !markdownContent) {
       toast.error('Veuillez remplir tous les champs obligatoires');
       return;
     }
@@ -165,6 +205,7 @@ export default function AdminArticleEditor() {
     try {
       const data = {
         ...formData,
+        content: markdownToHtml(markdownContent),
         status,
         tags: formData.tags.split(',').map(t => t.trim()).filter(Boolean)
       };
@@ -280,20 +321,21 @@ export default function AdminArticleEditor() {
               />
             </div>
 
-            {/* Content (WYSIWYG) */}
+            {/* Content (Markdown Editor) */}
             <div className="space-y-2">
-              <Label>Contenu *</Label>
-              <div className="bg-white rounded-lg border border-slate-200">
-                <ReactQuill
-                  theme="snow"
-                  value={formData.content}
+              <Label>Contenu * (Markdown)</Label>
+              <div data-color-mode="light" className="border border-slate-200 rounded-lg overflow-hidden">
+                <MDEditor
+                  value={markdownContent}
                   onChange={handleContentChange}
-                  modules={quillModules}
-                  formats={quillFormats}
-                  placeholder="Rédigez votre article..."
+                  height={400}
+                  preview="live"
                   data-testid="article-content"
                 />
               </div>
+              <p className="text-xs text-slate-500">
+                Utilisez Markdown : # Titre, ## Sous-titre, **gras**, *italique*, [lien](url), ![image](url)
+              </p>
             </div>
           </div>
 
