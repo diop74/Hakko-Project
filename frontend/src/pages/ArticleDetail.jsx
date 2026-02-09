@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Calendar, User, Eye, Tag, Share2, Linkedin, Twitter } from 'lucide-react';
+import { ArrowLeft, Calendar, User, Eye, Tag, Share2, Linkedin, Twitter, Download, Loader2 } from 'lucide-react';
 import { articlesAPI } from '@/lib/api';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import DOMPurify from 'dompurify';
+import html2pdf from 'html2pdf.js';
+
+const LOGO_URL = "https://customer-assets.emergentagent.com/job_sustainable-insights/artifacts/y08gbl8u_20251015_1623_Haako%20Logo%20Design_simple_compose_01k7mavmrke71vr0nt45t3fban.png";
 
 function formatDate(dateString) {
   if (!dateString) return '';
@@ -22,6 +25,8 @@ export default function ArticleDetail() {
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
+  const contentRef = useRef(null);
 
   useEffect(() => {
     fetchArticle();
@@ -38,6 +43,71 @@ export default function ArticleDetail() {
       setError('Article non trouvé');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDownloadPdf = async () => {
+    if (!article) return;
+    setDownloadingPdf(true);
+    
+    try {
+      // Create a styled container for PDF
+      const pdfContent = document.createElement('div');
+      pdfContent.innerHTML = `
+        <div style="font-family: 'DM Sans', Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto;">
+          <div style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #1B5E20;">
+            <img src="${LOGO_URL}" alt="HAAKO" style="height: 50px; margin-bottom: 15px;" />
+            <p style="color: #666; font-size: 12px; margin: 0;">Intelligence Stratégique pour une Afrique Durable</p>
+          </div>
+          
+          <div style="margin-bottom: 20px;">
+            <span style="background: #E8F5E9; color: #1B5E20; padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: 500;">
+              ${article.category}
+            </span>
+            <span style="background: #f1f5f9; color: #475569; padding: 4px 12px; border-radius: 4px; font-size: 12px; margin-left: 8px;">
+              ${article.theme}
+            </span>
+          </div>
+          
+          <h1 style="font-family: 'Manrope', Arial, sans-serif; font-size: 28px; color: #1a1c1a; margin-bottom: 15px; line-height: 1.3;">
+            ${article.title}
+          </h1>
+          
+          <p style="font-size: 16px; color: #64748b; margin-bottom: 20px; font-style: italic;">
+            ${article.excerpt}
+          </p>
+          
+          <div style="display: flex; gap: 20px; color: #64748b; font-size: 13px; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0;">
+            <span>Par ${article.author_name}</span>
+            <span>${formatDate(article.published_at)}</span>
+          </div>
+          
+          <div style="font-size: 14px; line-height: 1.8; color: #374151;">
+            ${article.content}
+          </div>
+          
+          <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #1B5E20; text-align: center;">
+            <p style="color: #666; font-size: 11px; margin: 0;">
+              © ${new Date().getFullYear()} HAAKO - www.haako.africa<br/>
+              Ce document est la propriété de HAAKO. Toute reproduction est soumise à autorisation.
+            </p>
+          </div>
+        </div>
+      `;
+      
+      const opt = {
+        margin: [10, 10, 10, 10],
+        filename: `HAAKO-${article.slug}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+      
+      await html2pdf().set(opt).from(pdfContent).save();
+    } catch (err) {
+      console.error('Error generating PDF:', err);
+    } finally {
+      setDownloadingPdf(false);
     }
   };
 
