@@ -191,19 +191,39 @@ export default function ArticleDetail() {
               {article.excerpt}
             </p>
             
-            <div className="flex flex-wrap items-center gap-6 text-sm text-slate-500 pb-8 border-b border-slate-100">
-              <div className="flex items-center gap-2">
-                <User className="h-4 w-4" />
-                {article.author_name}
+            <div className="flex flex-wrap items-center justify-between gap-6 text-sm text-slate-500 pb-8 border-b border-slate-100">
+              <div className="flex flex-wrap items-center gap-6">
+                <div className="flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  {article.author_name}
+                </div>
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4" />
+                  {formatDate(article.published_at)}
+                </div>
+                <div className="flex items-center gap-2">
+                  <Eye className="h-4 w-4" />
+                  {article.views} vue{article.views !== 1 ? 's' : ''}
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
-                {formatDate(article.published_at)}
-              </div>
-              <div className="flex items-center gap-2">
-                <Eye className="h-4 w-4" />
-                {article.views} vue{article.views !== 1 ? 's' : ''}
-              </div>
+              <Button 
+                onClick={handleDownloadPdf}
+                disabled={downloadingPdf}
+                className="bg-haako-900 hover:bg-haako-800"
+                data-testid="download-pdf-btn"
+              >
+                {downloadingPdf ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    Génération...
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4 mr-2" />
+                    Télécharger PDF
+                  </>
+                )}
+              </Button>
             </div>
           </motion.div>
         </div>
