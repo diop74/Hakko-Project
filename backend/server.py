@@ -21,6 +21,11 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
+# AUTHORIZED ADMIN EMAILS - Only these emails can access admin panel
+# Add your email addresses here (comma-separated in .env or hardcoded)
+AUTHORIZED_ADMIN_EMAILS = os.environ.get('ADMIN_EMAILS', '').split(',')
+AUTHORIZED_ADMIN_EMAILS = [e.strip().lower() for e in AUTHORIZED_ADMIN_EMAILS if e.strip()]
+
 # Create the main app
 app = FastAPI(title="HAAKO API", description="Strategic Intelligence Platform for Sustainable Africa")
 
