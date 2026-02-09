@@ -1,53 +1,100 @@
-import { useEffect } from "react";
-import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { Toaster } from "@/components/ui/sonner";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+// Pages
+import Home from "@/pages/Home";
+import About from "@/pages/About";
+import Solutions from "@/pages/Solutions";
+import SolutionDetail from "@/pages/SolutionDetail";
+import Blog from "@/pages/Blog";
+import ArticleDetail from "@/pages/ArticleDetail";
+import Contact from "@/pages/Contact";
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
+// Auth
+import AuthCallback from "@/pages/AuthCallback";
+import Login from "@/pages/Login";
 
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
+// Admin
+import AdminDashboard from "@/pages/admin/Dashboard";
+import AdminArticles from "@/pages/admin/Articles";
+import AdminArticleEditor from "@/pages/admin/ArticleEditor";
+import AdminMessages from "@/pages/admin/Messages";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
+// Layout
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+
+function AppRouter() {
+  const location = useLocation();
+  
+  // REMINDER: DO NOT HARDCODE THE URL, OR ADD ANY FALLBACKS OR REDIRECT URLS, THIS BREAKS THE AUTH
+  // Check URL fragment for session_id - must be synchronous (before render)
+  if (location.hash?.includes('session_id=')) {
+    return <AuthCallback />;
+  }
+  
+  // Check if admin route
+  const isAdminRoute = location.pathname.startsWith('/admin');
+  const isAuthRoute = location.pathname === '/login' || location.pathname === '/auth/callback';
+  
   return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
+    <div className="min-h-screen flex flex-col">
+      {!isAdminRoute && !isAuthRoute && <Navbar />}
+      <main className="flex-1">
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/solutions" element={<Solutions />} />
+          <Route path="/solutions/:slug" element={<SolutionDetail />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<ArticleDetail />} />
+          <Route path="/contact" element={<Contact />} />
+          
+          {/* Auth Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
+          
+          {/* Admin Routes - Protected */}
+          <Route path="/admin" element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/articles" element={
+            <ProtectedRoute>
+              <AdminArticles />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/articles/new" element={
+            <ProtectedRoute>
+              <AdminArticleEditor />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/articles/:articleId" element={
+            <ProtectedRoute>
+              <AdminArticleEditor />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/messages" element={
+            <ProtectedRoute>
+              <AdminMessages />
+            </ProtectedRoute>
+          } />
+        </Routes>
+      </main>
+      {!isAdminRoute && !isAuthRoute && <Footer />}
+      <Toaster position="top-right" richColors />
     </div>
   );
-};
+}
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <AppRouter />
+    </BrowserRouter>
   );
 }
 
