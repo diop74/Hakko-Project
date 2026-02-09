@@ -7,10 +7,10 @@ const HERO_BG = "https://images.unsplash.com/photo-1722081798151-13bcb3a1c975?cr
 const MEETING_IMG = "https://images.unsplash.com/photo-1573166364839-1bfe9196c23e?crop=entropy&cs=srgb&fm=jpg&q=85";
 
 const stats = [
-  { value: '10+', label: 'Années d\'expertise' },
-  { value: '50+', label: 'Études réalisées' },
-  { value: '15+', label: 'Pays couverts' },
-  { value: '100+', label: 'Décideurs accompagnés' },
+  { value: '5+', label: 'Années d\'expertise' },
+  { value: '5+', label: 'Études réalisées' },
+  { value: '9+', label: 'Pays couverts' },
+  { value: '45+', label: 'Décideurs accompagnés' },
 ];
 
 const services = [
@@ -73,7 +73,7 @@ export default function Home() {
               </span>
               <h1 className="font-manrope text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 leading-[1.1] mb-6">
                 Éclairer les décisions pour une{' '}
-                <span className="text-haako-900">Afrique durable</span>
+                <span className="text-haako-900">Transition energetic Equitable</span>
               </h1>
               <p className="font-dm-sans text-lg md:text-xl text-slate-700 leading-relaxed mb-8 max-w-xl">
                 HAAKO transforme les données complexes en analyses rigoureuses sur l'énergie, 
@@ -198,7 +198,7 @@ export default function Home() {
                 Thématiques
               </span>
               <h2 className="font-manrope text-3xl md:text-4xl font-bold text-slate-900 mb-6">
-                Au cœur des enjeux africains
+                Au cœur des enjeux energetiques
               </h2>
               <p className="font-dm-sans text-lg text-slate-600 leading-relaxed mb-8">
                 HAAKO se concentre sur les défis majeurs du continent africain, avec un ancrage 
