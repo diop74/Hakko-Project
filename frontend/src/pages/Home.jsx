@@ -43,7 +43,7 @@ const services = [
 const themes = [
   { name: 'Accès à l\'énergie', icon: TrendingUp },
   { name: 'Transition énergétique', icon: Globe },
-  { name: 'Finance Climat', icon: Target },
+  { name: 'Finance climat', icon: Target },
   { name: 'Développement durable', icon: Users },
 ];
 
@@ -198,7 +198,7 @@ export default function Home() {
                 Thématiques
               </span>
               <h2 className="font-manrope text-3xl md:text-4xl font-bold text-slate-900 mb-6">
-                Au cœur des enjeux energetiques
+                Au cœur des enjeux energetics
               </h2>
               <p className="font-dm-sans text-lg text-slate-600 leading-relaxed mb-8">
                 HAAKO se concentre sur les défis majeurs du continent africain, avec un ancrage 
