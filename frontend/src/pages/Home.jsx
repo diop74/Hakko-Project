@@ -198,12 +198,12 @@ export default function Home() {
                 Thématiques
               </span>
               <h2 className="font-manrope text-3xl md:text-4xl font-bold text-slate-900 mb-6">
-                Au cœur des enjeux energetics
+                Au cœur des enjeux énergétiques
               </h2>
               <p className="font-dm-sans text-lg text-slate-600 leading-relaxed mb-8">
-                HAAKO se concentre sur les défis majeurs du continent africain, avec un ancrage 
-                particulier en Mauritanie. Notre expertise couvre l'ensemble du spectre énergétique 
-                et environnemental.
+                HAAKO se concentre sur les défis énergétiques du continent, avec un ancrage 
+                particulier en Mauritanie. Notre expertise couvre l'ensemble du spectre 
+                énergétique et environnemental.
               </p>
               <div className="grid grid-cols-2 gap-4">
                 {themes.map((theme, index) => (
