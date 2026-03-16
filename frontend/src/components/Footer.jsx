@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Mail, MapPin, Linkedin, Twitter } from 'lucide-react';
+import { Mail, MapPin, Phone, Linkedin, Twitter } from 'lucide-react';
 
 const LOGO_URL = "https://customer-assets.emergentagent.com/job_sustainable-insights/artifacts/y08gbl8u_20251015_1623_Haako%20Logo%20Design_simple_compose_01k7mavmrke71vr0nt45t3fban.png";
 
@@ -47,11 +47,18 @@ export default function Footer() {
             </p>
             <div className="space-y-3">
               <a 
-                href="mailto:contact@haako.africa" 
+                href="mailto:abdoulayediop9@hotmail.com" 
                 className="flex items-center gap-3 text-slate-400 hover:text-white transition-colors text-sm"
               >
                 <Mail className="h-4 w-4" />
-                contact@haako.africa
+                abdoulayediop9@hotmail.com
+              </a>
+              <a 
+                href="tel:+22249146332" 
+                className="flex items-center gap-3 text-slate-400 hover:text-white transition-colors text-sm"
+              >
+                <Phone className="h-4 w-4" />
+                +222 49 14 63 32
               </a>
               <div className="flex items-center gap-3 text-slate-400 text-sm">
                 <MapPin className="h-4 w-4" />

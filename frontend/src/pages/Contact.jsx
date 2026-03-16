@@ -97,10 +97,10 @@ export default function Contact() {
                   <div>
                     <h3 className="font-manrope font-semibold text-slate-900 mb-1">Email</h3>
                     <a 
-                      href="mailto:contact@haako.africa" 
+                      href="mailto:abdoulayediop9@hotmail.com" 
                       className="font-dm-sans text-slate-600 hover:text-haako-900 transition-colors"
                     >
-                      contact@haako.africa
+                      abdoulayediop9@hotmail.com
                     </a>
                   </div>
                 </div>
@@ -123,14 +123,17 @@ export default function Contact() {
                   </div>
                   <div>
                     <h3 className="font-manrope font-semibold text-slate-900 mb-1">Téléphone</h3>
-                    <p className="font-dm-sans text-slate-600">
-                      +222 XX XX XX XX
-                    </p>
+                    <a 
+                      href="tel:+22249146332"
+                      className="font-dm-sans text-slate-600 hover:text-haako-900 transition-colors"
+                    >
+                      +222 49 14 63 32
+                    </a>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-12 p-8 bg-sand rounded-2xl">
+              <div className="mt-12 p-8 bg-haako-50 rounded-2xl">
                 <h3 className="font-manrope font-semibold text-slate-900 mb-3">
                   Horaires de disponibilité
                 </h3>
