@@ -73,7 +73,7 @@ export default function Home() {
               </span>
               <h1 className="font-manrope text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 leading-[1.1] mb-6">
                 Éclairer les décisions pour une{' '}
-                <span className="text-haako-900">Transition energetic Equitable</span>
+                <span className="text-haako-900">Transition Énergétique Équitable</span>
               </h1>
               <p className="font-dm-sans text-lg md:text-xl text-slate-700 leading-relaxed mb-8 max-w-xl">
                 HAAKO transforme les données complexes en analyses rigoureuses sur l'énergie, 
