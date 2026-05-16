@@ -3,53 +3,60 @@ import axios from 'axios';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API_BASE = `${BACKEND_URL}/api`;
 
-// Create axios instance
+// Public client — NO credentials. Public endpoints (articles, contact, files).
+// This avoids the Cloudflare-edge issue where ACAO is rewritten to '*' on GETs,
+// which the browser rejects when credentials are also sent.
+const publicApi = axios.create({
+  baseURL: API_BASE,
+  withCredentials: false,
+  headers: { 'Content-Type': 'application/json' },
+});
+
+// Auth/admin client — WITH credentials (httpOnly session cookie).
 const api = axios.create({
   baseURL: API_BASE,
   withCredentials: true,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  headers: { 'Content-Type': 'application/json' },
 });
 
 // Auth API
 export const authAPI = {
-  exchangeSession: (sessionId) => 
+  exchangeSession: (sessionId) =>
     api.post('/auth/session', { session_id: sessionId }),
-  
-  getMe: () => 
+
+  getMe: () =>
     api.get('/auth/me'),
-  
-  logout: () => 
+
+  logout: () =>
     api.post('/auth/logout'),
 };
 
-// Articles API (Public)
+// Articles API (Public — no credentials)
 export const articlesAPI = {
-  getAll: (params = {}) => 
-    api.get('/articles', { params }),
-  
-  getCount: (params = {}) => 
-    api.get('/articles/count', { params }),
-  
-  getBySlug: (slug) => 
-    api.get(`/articles/${slug}`),
+  getAll: (params = {}) =>
+    publicApi.get('/articles', { params }),
+
+  getCount: (params = {}) =>
+    publicApi.get('/articles/count', { params }),
+
+  getBySlug: (slug) =>
+    publicApi.get(`/articles/${slug}`),
 };
 
-// Admin Articles API
+// Admin Articles API (credentialed)
 export const adminArticlesAPI = {
-  getAll: (params = {}) => 
+  getAll: (params = {}) =>
     api.get('/admin/articles', { params }),
-  
-  create: (data) => 
+
+  create: (data) =>
     api.post('/admin/articles', data),
-  
-  update: (articleId, data) => 
+
+  update: (articleId, data) =>
     api.put(`/admin/articles/${articleId}`, data),
-  
-  delete: (articleId) => 
+
+  delete: (articleId) =>
     api.delete(`/admin/articles/${articleId}`),
-  
+
   uploadImage: (file) => {
     const formData = new FormData();
     formData.append('file', file);
@@ -59,34 +66,34 @@ export const adminArticlesAPI = {
   },
 };
 
-// Contact API
+// Contact API (public)
 export const contactAPI = {
-  send: (data) => 
-    api.post('/contact', data),
+  send: (data) =>
+    publicApi.post('/contact', data),
 };
 
-// Admin Messages API
+// Admin Messages API (credentialed)
 export const adminMessagesAPI = {
-  getAll: (params = {}) => 
+  getAll: (params = {}) =>
     api.get('/admin/messages', { params }),
-  
-  markRead: (messageId) => 
+
+  markRead: (messageId) =>
     api.put(`/admin/messages/${messageId}/read`),
-  
-  delete: (messageId) => 
+
+  delete: (messageId) =>
     api.delete(`/admin/messages/${messageId}`),
 };
 
-// Admin Stats API
+// Admin Stats API (credentialed)
 export const adminStatsAPI = {
-  get: () => 
+  get: () =>
     api.get('/admin/stats'),
 };
 
-// Health check
+// Health check (public)
 export const healthAPI = {
-  check: () => 
-    api.get('/health'),
+  check: () =>
+    publicApi.get('/health'),
 };
 
 export default api;
