@@ -1,100 +1,57 @@
-# HAAKO - Product Requirements Document
+# PRD — HAAKO
 
 ## Original Problem Statement
-HAAKO est une plateforme d'analyse, de recherche appliquée et de communication stratégique dédiée à l'accès à l'énergie, la transition énergétique, le climat et le développement durable en Afrique, avec ancrage en Mauritanie. Le nom signifie "vert" en peul (pulaar).
+Plateforme web full-stack pour HAAKO, une application d'intelligence stratégique et de recherche dédiée à l'accès à l'énergie, au climat et au développement durable en Afrique (Mauritanie en particulier).
+
+## Stack
+- Frontend : React 19, TailwindCSS, Framer Motion, MDEditor, html2pdf.js
+- Backend : FastAPI, MongoDB (Motor)
+- Auth : Emergent-managed Google Auth (restreint à 3 emails via `.env`)
+- Design : "Swiss-Eco" institutionnel, vert profond #1B5E20
 
 ## User Personas
-1. **Investisseurs et développeurs de projets énergétiques** - Recherchent des analyses de marché et études de faisabilité
-2. **Institutions gouvernementales** - Besoin de données pour la prise de décision politique
-3. **Institutions multilatérales** - Évaluation de projets et programmes
-4. **ONG spécialisées** - Suivi des enjeux environnementaux
-5. **Société civile** - Accès à l'information et sensibilisation
+- **Visiteur public** : Lit les articles, About, Solutions, Contact (sans authentification).
+- **Admin** : Crée/édite articles, voit dashboard et messages contact (3 emails autorisés uniquement).
 
 ## Core Requirements
-- Site institutionnel sobre et professionnel
-- Blog avec éditeur WYSIWYG pour analyses et insights
-- Système d'administration sécurisé (Google Auth)
-- Formulaire de contact
-- SEO optimisé, responsive design
+- Pages publiques : Accueil, À propos, Solutions (sous-pages), Blog (articles, catégories, tags), Contact.
+- Dashboard admin sécurisé (CMS articles + pages).
+- Téléchargement PDF des articles.
+- Responsive, design sobre.
 
-## Architecture
-- **Frontend**: React 19 + Tailwind CSS + Framer Motion
-- **Backend**: FastAPI (Python)
-- **Database**: MongoDB
-- **Auth**: Emergent Google OAuth
-- **Fonts**: Manrope (headings) + DM Sans (body)
-- **Primary Color**: #1B5E20 (HAAKO Green)
+## CHANGELOG
+- 2026-02-09 : MVP initial — React + FastAPI + Mongo + Google Auth + UI institutionnelle.
+- 2026-02-09 : PDF generation via html2pdf.js, MDEditor remplace react-quill.
+- 2026-02-16 : Restriction admin via `ADMIN_EMAILS` env var.
+- 2026-05-16 : Mises à jour textuelles (Home, Contact, logo, typo Énergétique).
+- 2026-05-16 : **Fix CORS P0** — Backend `allow_origins=["*"]` + `allow_credentials=True` incompatible → la spec CORS exige une origine spécifique avec credentials. Browser bloquait la réponse `/api/articles` → "0 articles trouvés" pour public. Fix : `CORS_ORIGINS` listé explicitement + `allow_origin_regex` pour domaines emergent. Validé en preview (4 articles affichés). **Doit être redéployé en production** pour résoudre `haako.online`.
 
-## What's Been Implemented (2026-02-09)
+## Active Issues / Pending
+- 🔴 P0 Production : Redéploiement requis pour appliquer fix CORS sur `haako.online`.
+- 🟡 P1 : Refactor `cover_image` base64 → stockage objet (payload actuellement ~150KB par article).
 
-### Public Pages
-- ✅ Homepage avec hero, stats, services, CTA
-- ✅ About page (vision, mission, valeurs, champs d'intervention)
-- ✅ Solutions page (Recherche & Analyse, Communication Stratégique)
-- ✅ Solution detail pages
-- ✅ Blog listing avec filtres (catégorie, thème)
-- ✅ Article detail page avec partage social
-- ✅ Contact page avec formulaire
+## Roadmap (Backlog)
+- **P1** Newsletter (SendGrid ou Resend).
+- **P1** Refactor stockage images (Emergent object storage).
+- **P2** Recherche full-text sur articles.
+- **P2** Multilingue FR/EN/AR.
 
-### Admin Panel
-- ✅ Dashboard avec statistiques
-- ✅ Gestion des articles (CRUD)
-- ✅ Éditeur WYSIWYG (React Quill)
-- ✅ Gestion des messages de contact
-- ✅ Authentification Google via Emergent
+## Admin Credentials
+- diopoumar03@gmail.com
+- abdoulayediop9@hotmail.com
+- abdoullahidiopthiam@gmail.com
+(via Google OAuth uniquement, contrôlé par `ADMIN_EMAILS` dans `backend/.env`)
 
-### Backend API
-- ✅ /api/auth/* - Authentification
-- ✅ /api/articles/* - CRUD articles
-- ✅ /api/contact - Messages de contact
-- ✅ /api/admin/* - Routes protégées
+## Key API Endpoints
+- `GET /api/articles` (public, liste paginée + filtres)
+- `GET /api/articles/count`
+- `GET /api/articles/{slug}`
+- `POST /api/auth/session`, `GET /api/auth/me`, `POST /api/auth/logout`
+- `POST /api/contact`
+- `*` `/api/admin/...` (protégés)
 
-## Sample Data Created
-- 3 articles exemples (Mauritanie, Afrique, Énergie)
-- 1 utilisateur admin seed
-
-## Prioritized Backlog
-
-### P0 (Critical)
-- ✅ All core features implemented
-
-### P1 (High)
-- Newsletter subscription integration
-- Search functionality for blog
-- Related articles suggestion
-
-### P2 (Medium)
-- Multi-language support (FR/EN/AR)
-- Analytics dashboard
-- PDF export for articles
-- Social media integration
-
-### P3 (Low)
-- Dark mode
-- Comments on articles
-- User accounts for subscribers
-
-## Next Tasks
-1. Ajouter une fonctionnalité de newsletter (SendGrid/Resend)
-2. Implémenter la recherche full-text sur les articles
-3. Ajouter des métriques Google Analytics
-4. Créer plus de contenu exemple
-5. Optimiser SEO avec meta tags dynamiques
-
----
-
-## Update (2026-02-09 - Iteration 2)
-
-### New Features Added:
-- ✅ **Téléchargement PDF** des articles avec logo HAAKO et mise en page professionnelle
-- ✅ **Design plus vert** : Palette mise à jour avec fond vert clair (#E8F5E9) au lieu de blanc
-
-### Design Changes:
-- Background global: haako-50/30 (vert très clair)
-- Hero sections: gradient haako-100 → haako-50
-- Sections alternées: haako-50/50 et haako-50/40
-- Badges et accents: haako-100 avec bordure haako-200
-
-### Technical:
-- Librairie html2pdf.js ajoutée pour génération PDF
-- CSS variables mises à jour pour palette verte
+## Files of Reference
+- `/app/backend/server.py` — Routes API + middleware CORS
+- `/app/backend/.env` — `CORS_ORIGINS`, `ADMIN_EMAILS`, `MONGO_URL`
+- `/app/frontend/src/lib/api.js` — Axios client `withCredentials: true`
+- `/app/frontend/src/pages/Blog.jsx`, `ArticleDetail.jsx`

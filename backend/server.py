@@ -539,7 +539,8 @@ app.include_router(api_router)
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
+    allow_origins=[o.strip() for o in os.environ.get('CORS_ORIGINS', '').split(',') if o.strip()],
+    allow_origin_regex=r"https://([a-zA-Z0-9-]+\.)?(emergent\.host|emergentagent\.com|haako\.online)",
     allow_methods=["*"],
     allow_headers=["*"],
 )
