@@ -12,6 +12,7 @@ import uuid
 from datetime import datetime, timezone, timedelta
 import httpx
 import base64
+from storage import init_storage, put_object, get_object, APP_NAME
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -510,18 +511,56 @@ async def get_admin_stats(user: User = Depends(get_current_user)):
 
 @api_router.post("/admin/upload")
 async def upload_image(file: UploadFile = File(...), user: User = Depends(get_current_user)):
-    """Upload image and return base64 data URL"""
-    if not file.content_type.startswith("image/"):
+    """Upload image to Emergent Object Storage and return a public-served URL."""
+    if not file.content_type or not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="Only image files are allowed")
-    
-    # Read file content
+
     content = await file.read()
-    
-    # Convert to base64
-    base64_encoded = base64.b64encode(content).decode("utf-8")
-    data_url = f"data:{file.content_type};base64,{base64_encoded}"
-    
-    return {"url": data_url}
+    if len(content) > 10 * 1024 * 1024:  # 10 MB cap
+        raise HTTPException(status_code=400, detail="Image too large (max 10 MB)")
+
+    ext = (file.filename.rsplit(".", 1)[-1] if file.filename and "." in file.filename else "bin").lower()
+    object_path = f"{APP_NAME}/uploads/{user.user_id}/{uuid.uuid4().hex}.{ext}"
+
+    try:
+        result = put_object(object_path, content, file.content_type)
+    except Exception as e:
+        logger.exception("Storage upload failed")
+        raise HTTPException(status_code=500, detail=f"Storage upload failed: {e}")
+
+    stored_path = result["path"]
+
+    await db.files.insert_one({
+        "file_id": str(uuid.uuid4()),
+        "storage_path": stored_path,
+        "original_filename": file.filename,
+        "content_type": file.content_type,
+        "size": result.get("size", len(content)),
+        "uploaded_by": user.user_id,
+        "is_deleted": False,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    })
+
+    public_url = f"/api/files/{stored_path}"
+    return {"url": public_url, "path": stored_path}
+
+
+@api_router.get("/files/{path:path}")
+async def serve_file(path: str):
+    """Public file proxy: serves uploaded assets (cover images, etc.)."""
+    record = await db.files.find_one({"storage_path": path, "is_deleted": False}, {"_id": 0})
+    if not record:
+        raise HTTPException(status_code=404, detail="File not found")
+    try:
+        data, content_type = get_object(path)
+    except Exception as e:
+        logger.exception("Storage download failed")
+        raise HTTPException(status_code=502, detail=f"Storage error: {e}")
+    return Response(
+        content=data,
+        media_type=record.get("content_type") or content_type,
+        headers={"Cache-Control": "public, max-age=31536000, immutable"},
+    )
 
 # ==================== HEALTH CHECK ====================
 
@@ -544,6 +583,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.on_event("startup")
+async def startup_event():
+    try:
+        init_storage()
+    except Exception as e:
+        logger.warning(f"Storage init at startup failed (will retry on first use): {e}")
+
 
 @app.on_event("shutdown")
 async def shutdown_db_client():

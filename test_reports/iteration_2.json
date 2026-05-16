@@ -1,0 +1,41 @@
+{
+  "summary": "Backend-only testing of HAAKO post-CORS-fix and cover_image migration to Emergent Object Storage. All 15 pytest cases PASS. Public endpoints (articles, /api/files/*) are accessible without auth; admin endpoints correctly require auth; payload reduced from 2.4MB to ~5KB; CORS at the FastAPI layer correctly returns a specific origin (not '*') with allow_credentials=true.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "edge / preview URL (Cloudflare)",
+        "issue": "When hit via https://haako-energy.preview.emergentagent.com, the Cloudflare/preview ingress rewrites Access-Control-Allow-Origin to '*' AND replaces Cache-Control with 'no-store, no-cache, must-revalidate'. The backend itself returns the correct values (verified via localhost:8001). This means: (a) on production haako.online the deployed backend will work correctly because the CORS code is right; (b) the preview URL is technically violating CORS spec (ACAO='*' with ACAC='true') due to edge-proxy override — but this is platform/ingress behavior, not the app code. Browsers may still block fetch on the preview URL because of this — keep in mind for end-to-end UI testing on the preview deployment."
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_public_endpoints.py",
+    "/app/test_reports/pytest/iteration_2.xml"
+  ],
+  "action_items": [
+    "No backend code changes required — CORS fix and cover_image migration are working correctly.",
+    "Heads-up only: the preview URL ingress overrides CORS/Cache-Control headers; if you must validate browser-level CORS on the preview deployment, raise with platform team. Production haako.online should behave correctly since the FastAPI layer is verified compliant."
+  ],
+  "critical_code_review_comments": [
+    "/api/files/{path:path} endpoint correctly excludes _id from db.files lookups and returns proper Cache-Control: public, max-age=31536000, immutable (verified at backend).",
+    "CORS middleware correctly uses allow_credentials=true with explicit allow_origins list + allow_origin_regex for *.emergent.host / *.emergentagent.com / *.haako.online — no wildcard origin in the FastAPI layer.",
+    "Storage init runs lazily via init_storage(); startup hook attempts it and gracefully falls back to lazy init if env var missing — current logs confirm 'Emergent Object Storage initialized'.",
+    "Minor: server.py is 598 lines — still within manageable range but approaching the 700-line threshold; consider splitting auth + articles + files into separate routers when adding more features."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_public_endpoints.py"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "N/A (skipped per request)"},
+  "test_credentials": "Not applicable — admin endpoints were verified only for 401/403 without token (per request).",
+  "seed_data_creation": "None. Used existing migrated article 'logiciels-statistique' and existing uploaded file 'haako/uploads/migration/aac53472a9bc4e369b4b3d220c446c92.png'.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Note: the slug in the original test request 'haako-energy' does not exist in DB; the actual migrated slug is 'logiciels-statistique' — tests were updated accordingly. Articles in DB: logiciels-statistique (uses /api/files/ cover), hydrogene-vert-afrique-hub-mondial, financement-climatique-afrique, transition-energetique-mauritanie-2024 (last 3 use Unsplash URLs). The preview URL goes through Cloudflare which strips/overrides CORS and Cache-Control headers — always assert these against http://localhost:8001 to validate the backend behavior.",
+  "rca_of_the_issue": "Initial 5/12 test failures were not actual bugs — they were caused by (1) wrong test fixture slug 'haako-energy' (article doesn't exist; real slug is 'logiciels-statistique'), and (2) the preview URL's Cloudflare edge proxy overriding both Access-Control-Allow-Origin (-> '*') and Cache-Control (-> 'no-store, no-cache, must-revalidate'). After updating tests to (a) use the correct slug and (b) verify CORS/Cache-Control directly against the FastAPI app at localhost:8001 while still validating public-facing behavior (status code, content-type, public no-auth access) via the preview URL, all 15 tests pass. The backend code (server.py CORSMiddleware config + /api/files cache headers) is correct."
+}
